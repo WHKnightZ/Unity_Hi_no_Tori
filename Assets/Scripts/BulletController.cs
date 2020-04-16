@@ -9,6 +9,7 @@ public class BulletController : MonoBehaviour
 
     protected float timeLife = 0.25f;
     public Vector3 direction;
+    private bool isAlive;
 
     void Start()
     {
@@ -18,6 +19,7 @@ public class BulletController : MonoBehaviour
             bulletExplode = Resources.Load<GameObject>("Prefabs/BulletExplode");
             stone = Resources.Load<GameObject>("Prefabs/Items/Stone");
         }
+        isAlive = true;
     }
 
     void Update()
@@ -64,7 +66,7 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "EnemyCollision")
+        if (collision.tag == "EnemyCollision" && isAlive)
         {
             GameObject parent = collision.gameObject.transform.parent.gameObject;
             SpawnEnemyController.spawnEnemies[parent.GetComponent<Enemy>().index].Kill();
@@ -72,6 +74,7 @@ public class BulletController : MonoBehaviour
             Destroy(parent);
             Destroy(gameObject);
             SoundEffect.PlaySpawnStone();
+            isAlive = false;
         }
     }
 }

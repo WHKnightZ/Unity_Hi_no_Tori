@@ -16,6 +16,8 @@ public class SoundEffect : MonoBehaviour
     private static AudioClip audioItemShow;
     private static AudioClip audioShootStone;
     private static AudioClip audioTileExplode;
+    private static AudioClip audioLostHp;
+    private static AudioClip audioDead;
 
     void Start()
     {
@@ -34,6 +36,8 @@ public class SoundEffect : MonoBehaviour
             audioItemShow = Resources.Load<AudioClip>("Sounds/ItemShow");
             audioShootStone = Resources.Load<AudioClip>("Sounds/ShootStone");
             audioTileExplode = Resources.Load<AudioClip>("Sounds/TileExplode");
+            audioLostHp = Resources.Load<AudioClip>("Sounds/LostHp");
+            audioDead = Resources.Load<AudioClip>("Sounds/Dead");
         }
     }
 
@@ -90,5 +94,15 @@ public class SoundEffect : MonoBehaviour
     public static void PlayTileExplode()
     {
         audioSource.PlayOneShot(audioTileExplode);
+    }
+
+    public static void PlayLostHp()
+    {
+        audioSource.PlayOneShot(audioLostHp);
+    }
+
+    public static void PlayDead()
+    {
+        audioSource.PlayOneShot(audioDead);
     }
 }

@@ -7,13 +7,13 @@ public class SpawnEnemyController : MonoBehaviour
     public static int count;
     public static Transform trans;
 
-    private Camera camera;
+    private Camera cam;
     private float timer = .2f;
 
     void Start()
     {
         Enemy.layerGround = LayerMask.GetMask("Ground");
-        camera = MainCamera.camera;
+        cam = MainCamera.cam;
         spawnEnemies = new SpawnEnemy[maxEnemy];
         count = 0;
         trans = transform;
@@ -27,8 +27,8 @@ public class SpawnEnemyController : MonoBehaviour
 
     void Update()
     {
-        float posLeft = camera.transform.position.x + 10f;
-        float posRight = posLeft + 8f;
+        float posLeft = cam.transform.position.x + 10f;
+        float posRight = posLeft + 10f;
         for (int i = 0; i < count; i++)
         {
             float pos = spawnEnemies[i].gameObject.transform.position.x;

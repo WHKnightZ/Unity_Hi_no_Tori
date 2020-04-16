@@ -2,11 +2,11 @@
 
 public class MainCamera : MonoBehaviour
 {
-    public static Camera camera;
+    public static Camera cam;
 
     void Awake()
     {
-        camera = GetComponent<Camera>();
+        cam = GetComponent<Camera>();
     }
 
 }

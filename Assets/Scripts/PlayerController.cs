@@ -5,16 +5,20 @@ public class PlayerController : MonoBehaviour
     private static bool isInit = false;
     private static Vector3[] localScale = { new Vector3(-1f, 1f, 1f), new Vector3(1f, 1f, 1f) };
     private static Vector3[] offsetHorizontal = { Vector3.left, Vector3.right };
+    private static Vector3[] jumpForce = { new Vector3(0f, 700f, 0f), new Vector3(0f, 250f, 0f) };
 
     private GameObject background;
     private Rigidbody2D rb;
-    private Camera camera;
+    private BoxCollider2D box;
+    private Camera cam;
     private float minCam, maxCam;
 
     [SerializeField] private Sprite[] spriteMove;
     [SerializeField] private Sprite spriteJump;
     [SerializeField] private Sprite spriteShoot;
     [SerializeField] private Sprite spriteCrouch;
+    [SerializeField] private LayerMask layerEnemy;
+    [SerializeField] private GameObject playerDead;
 
     private GameObject bullet;
     private GameObject bulletUp;
@@ -26,15 +30,19 @@ public class PlayerController : MonoBehaviour
     private int jumpLow;
     private int currentTileX = -99, currentTileY = -99;
     private float delayJump = 0f;
-    private bool isCrouch;
-    private bool isShoot;
-    private bool isJump;
-    private bool isFall = false;
     private float delayShoot = 0f;
     private int drt = 1;
     private float delayAnimationMove = 0f;
     private float delayAnimationShoot = 0f;
     private int stateMove = 0;
+
+    private bool isCrouch;
+    private bool isShoot;
+    private bool isJump;
+    private bool isFall = false;
+    private bool isImmune = false;
+    private bool isShowSprite = true;
+    private float timerImmune;
 
     private int life = 3;
     private int maxHp = 5;
@@ -51,7 +59,12 @@ public class PlayerController : MonoBehaviour
             bulletUp = Resources.Load<GameObject>("Prefabs/BulletUp");
         }
 
-        camera = MainCamera.camera;
+        if (StageManager.isLocated)
+        {
+            transform.position = StageManager.position;
+        }
+
+        cam = MainCamera.cam;
         minCam = 0f;
         maxCam = GameObject.Find("Boundary").transform.position.x - 10f;
 
@@ -59,6 +72,7 @@ public class PlayerController : MonoBehaviour
 
         background = GameObject.Find("Background");
         rb = GetComponent<Rigidbody2D>();
+        box = GetComponent<BoxCollider2D>();
     }
 
     void Update()
@@ -110,17 +124,17 @@ public class PlayerController : MonoBehaviour
         isShoot = false;
         if (Input.GetKey(KeyCode.K) && delayShoot < 0f)
             isShoot = true;
-        jumpState = 0;
+        jumpState = -1;
         if (Input.GetKey(KeyCode.J))
-            jumpState = 1;
+            jumpState = 0;
         else if (Input.GetKey(KeyCode.L))
-            jumpState = 2;
+            jumpState = 1;
         if (IsGrounded())
         {
             isJump = false;
             var pos = Unstable.tilemap.WorldToCell(transform.position - Vector3.up * 0.3f);
             pos.y -= 1;
-            if (jumpState == 2 && isFall && isCrouch)
+            if (jumpState == 1 && isFall && isCrouch)
             {
                 if (pos.x != currentTileX || pos.y != currentTileY)
                 {
@@ -138,22 +152,12 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-            if (delayJump < 0f)
+            if (delayJump < 0f && jumpState > -1)
             {
-                if (jumpState == 2)
-                {
-                    isJump = true;
-                    delayJump = 0.1f;
-                    rb.AddForce(Vector2.up * 250f);
-                    SoundEffect.PlayJump();
-                }
-                else if (jumpState == 1)
-                {
-                    isJump = true;
-                    delayJump = 0.1f;
-                    rb.AddForce(Vector2.up * 700f);
-                    SoundEffect.PlayJump();
-                }
+                isJump = true;
+                delayJump = 0.1f;
+                rb.AddForce(jumpForce[jumpState]);
+                SoundEffect.PlayJump();
             }
             isFall = false;
         }
@@ -201,18 +205,37 @@ public class PlayerController : MonoBehaviour
             delayAnimationShoot = 0.2f;
         }
         spriteRenderer.sprite = sprite;
+
+        if (!isImmune)
+        {
+            if (Physics2D.OverlapBox(box.bounds.center, box.bounds.size, 0f, layerEnemy) != null)
+                LostHp(1);
+        }
+        else
+        {
+            isShowSprite = !isShowSprite;
+            if (!isShowSprite)
+                spriteRenderer.sprite = null;
+            timerImmune -= Time.deltaTime;
+            if (timerImmune < 0f)
+                isImmune = false;
+        }
+
+        if (transform.position.y < -9f)
+            LostHp(hp);
+
         ReloadCamera();
     }
 
     bool IsGrounded()
     {
-        return rb.velocity.y > -0.001f && rb.velocity.y < 0.001f;
+        return rb.velocity.y > -0.002f && rb.velocity.y < 0.002f;
     }
 
     void ReloadCamera()
     {
         float camPos = Mathf.Clamp(transform.position.x, minCam, maxCam);
-        camera.transform.position = new Vector3(camPos, 0f, -10f);
+        cam.transform.position = new Vector3(camPos, 0f, -10f);
 
         float bgPos = camPos / 1.1f;
         if (bgPos + 44f < camPos + 20f)
@@ -220,6 +243,27 @@ public class PlayerController : MonoBehaviour
         else if (bgPos > camPos)
             bgPos -= 22f * (int)((bgPos - camPos) / 22f + 1);
         background.transform.position = new Vector3(bgPos, 0f, 0f);
+    }
+
+    void LostHp(int n)
+    {
+        hp -= n;
+        if (hp <= 0)
+        {
+            Dead();
+            return;
+        }
+        isImmune = true;
+        timerImmune = 1f;
+        SoundEffect.PlayLostHp();
+    }
+
+    void Dead()
+    {
+        // Create a new Death Player at this position, has rigid body but not collision
+        Instantiate(playerDead, transform.position, Quaternion.identity);
+        SoundEffect.PlayDead();
+        Destroy(gameObject);
     }
 
 }

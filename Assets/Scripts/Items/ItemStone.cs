@@ -1,25 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ItemStone : MonoBehaviour
 {
-    private static Vector2 vzero = new Vector2(0.002f, 0f);
-    private static Vector2 vzero2 = new Vector2(0f, -0.002f);
+    private static Vector2 velocity = new Vector2(-4f, 0f);
+    private static Vector2 vzero = new Vector2(0f, -0.002f);
 
-    private Vector2 velocity;
     private GameObject parent;
     private Rigidbody2D rb;
     private bool isMove;
 
     void Start()
     {
-        velocity = new Vector2(-250f, 0f);
         parent = transform.parent.gameObject;
         parent.transform.parent = SpawnItemController.trans;
         rb = parent.GetComponent<Rigidbody2D>();
-        rb.velocity = vzero2;
+        rb.velocity = vzero;
         isMove = false;
+        velocity = -velocity;
     }
 
     void Update()
@@ -29,8 +26,7 @@ public class ItemStone : MonoBehaviour
             if (IsGrounded())
             {
                 isMove = true;
-                rb.velocity = -vzero;
-                rb.AddForce(velocity);
+                rb.velocity = velocity;
             }
         }
         else
@@ -70,8 +66,7 @@ public class ItemStone : MonoBehaviour
             velocity = -velocity;
             if (isMove)
             {
-                rb.velocity = vzero;
-                rb.AddForce(velocity);
+                rb.velocity = velocity;
             }
             Destroy(collision.gameObject);
             SoundEffect.PlayShootStone();

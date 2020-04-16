@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnItemController : MonoBehaviour
@@ -8,7 +7,7 @@ public class SpawnItemController : MonoBehaviour
     public static bool isInit = false;
     public static Transform trans;
 
-    private Camera camera;
+    private Camera cam;
     private List<GameObject> items;
 
     void Awake()
@@ -23,7 +22,7 @@ public class SpawnItemController : MonoBehaviour
 
     void Start()
     {
-        camera = MainCamera.camera;
+        cam = MainCamera.cam;
         trans = transform;
         items = new List<GameObject>(GameObject.FindGameObjectsWithTag("Item"));
         foreach (GameObject obj in items)
@@ -32,15 +31,13 @@ public class SpawnItemController : MonoBehaviour
 
     void Update()
     {
-        foreach (GameObject obj in items)
+        for (int i = items.Count - 1; i >= 0; i--)
         {
-            if (obj == null)
-            { }
-            else
-            if (camera.transform.position.x + 8f > obj.transform.position.x)
+            GameObject obj = items[i];
+            if (cam.transform.position.x + 8f > obj.transform.position.x)
             {
                 obj.SetActive(true);
-                //items.Remove(obj);
+                items.RemoveAt(i);
             }
         }
     }
