@@ -19,7 +19,7 @@ public class Item : MonoBehaviour
 
     void Update()
     {
-        if (transform.position.y < -9f)
+        if (transform.position.y < -8.5f)
             Destroy(parent);
     }
 

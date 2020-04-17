@@ -11,6 +11,8 @@ public class StageManager : MonoBehaviour
 
     void Start()
     {
+        MainCamera.cam.transform.position = new Vector3(0f, 0f, -10f);
+        HpManager.Init();
         delay = 2f;
     }
 

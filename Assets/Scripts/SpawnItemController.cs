@@ -24,9 +24,13 @@ public class SpawnItemController : MonoBehaviour
     {
         cam = MainCamera.cam;
         trans = transform;
-        items = new List<GameObject>(GameObject.FindGameObjectsWithTag("Item"));
-        foreach (GameObject obj in items)
+        items = new List<GameObject>();
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            GameObject obj = transform.GetChild(i).gameObject;
             obj.SetActive(false);
+            items.Add(obj);
+        }
     }
 
     void Update()

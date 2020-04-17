@@ -8,8 +8,9 @@ public class ItemPhoenix : Item
         {
             if (collision.tag == "Player")
             {
+                HpManager.IncreaseMaxHp();
                 Destroy(parent);
-                // + 1 life
+                SoundEffect.PlayEatPhoenix();
             }
         }
         else

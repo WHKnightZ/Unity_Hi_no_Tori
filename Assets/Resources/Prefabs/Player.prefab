@@ -159,3 +159,5 @@ MonoBehaviour:
     m_Bits: 1024
   playerDead: {fileID: 7682760237241191146, guid: 2ab835e80628126428a3669f7ea9aeb8,
     type: 3}
+  playerPortal: {fileID: 7025774996832588373, guid: fa03eb80a8f00f5459973386911cb86f,
+    type: 3}

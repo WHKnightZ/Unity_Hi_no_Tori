@@ -9,7 +9,7 @@ public class ItemRice : Item
             if (collision.tag == "Player")
             {
                 Destroy(parent);
-                // Full hp
+                HpManager.FullHp();
                 SoundEffect.PlayEatRice();
             }
         }

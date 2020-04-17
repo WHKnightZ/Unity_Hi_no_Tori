@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
 
     public void CheckDead()
     {
-        if (transform.position.y < -9f || MainCamera.cam.transform.position.x - 12f > transform.position.x)
+        if (transform.position.y < -8.5f || MainCamera.cam.transform.position.x - 12f > transform.position.x)
         {
             SpawnEnemyController.spawnEnemies[index].Kill();
             Destroy(gameObject);

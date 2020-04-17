@@ -9,7 +9,7 @@ public class ItemStones : Item
             if (collision.tag == "Player")
             {
                 Destroy(parent);
-                // +20 stones
+                StoneManager.ReloadStone(20);
                 SoundEffect.PlayEatStones();
             }
         }

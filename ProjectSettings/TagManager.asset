@@ -5,9 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - EnemyCollision
   - Item
-  - ItemCollision
   - Bullet
   layers:
   - Default

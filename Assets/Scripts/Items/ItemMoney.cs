@@ -9,7 +9,7 @@ public class ItemMoney : Item
             if (collision.tag == "Player")
             {
                 Destroy(parent);
-                // + 400 scores
+                ScoreManager.IncreaseScore(10);
                 SoundEffect.PlayEatMoney();
             }
         }

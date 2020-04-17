@@ -17,11 +17,11 @@ public class SpawnEnemyController : MonoBehaviour
         spawnEnemies = new SpawnEnemy[maxEnemy];
         count = 0;
         trans = transform;
-        GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (GameObject enemy in allEnemies)
+        for (int i = 0; i < transform.childCount; i++)
         {
-            Add(new SpawnEnemy(enemy));
-            enemy.SetActive(false);
+            GameObject obj = transform.GetChild(i).gameObject;
+            Add(new SpawnEnemy(obj));
+            obj.SetActive(false);
         }
     }
 

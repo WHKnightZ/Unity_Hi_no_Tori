@@ -38,7 +38,7 @@ public class ItemStone : MonoBehaviour
                 return;
             }
         }
-        if (transform.position.y < -9f)
+        if (transform.position.y < -8.5f)
             Destroy(parent);
     }
 
@@ -49,7 +49,6 @@ public class ItemStone : MonoBehaviour
 
     private bool CantMove()
     {
-
         return rb.velocity.x > -0.001f && rb.velocity.x < 0.001f;
     }
 
@@ -58,7 +57,7 @@ public class ItemStone : MonoBehaviour
         if (collision.tag == "Player")
         {
             Destroy(parent);
-            // Increase Stone
+            StoneManager.ReloadStone(1);
             SoundEffect.PlayEatStone();
         }
         if (collision.tag == "Bullet")

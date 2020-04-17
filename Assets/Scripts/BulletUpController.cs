@@ -9,6 +9,7 @@ public class BulletUpController : BulletController
             isInit = true;
             bulletExplode = Resources.Load<GameObject>("Prefabs/BulletExplode");
         }
+        isAlive = true;
     }
 
     void Update()

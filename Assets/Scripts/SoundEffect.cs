@@ -12,12 +12,14 @@ public class SoundEffect : MonoBehaviour
     private static AudioClip audioEatRice;
     private static AudioClip audioEatStone;
     private static AudioClip audioEatStones;
+    private static AudioClip audioEatPhoenix;
     private static AudioClip audioSpawnStone;
     private static AudioClip audioItemShow;
     private static AudioClip audioShootStone;
     private static AudioClip audioTileExplode;
     private static AudioClip audioLostHp;
     private static AudioClip audioDead;
+    private static AudioClip audioPortal;
 
     void Start()
     {
@@ -32,12 +34,14 @@ public class SoundEffect : MonoBehaviour
             audioEatRice = Resources.Load<AudioClip>("Sounds/EatRice");
             audioEatStone = Resources.Load<AudioClip>("Sounds/EatStone");
             audioEatStones = Resources.Load<AudioClip>("Sounds/EatStones");
+            audioEatPhoenix = Resources.Load<AudioClip>("Sounds/EatPhoenix");
             audioSpawnStone = Resources.Load<AudioClip>("Sounds/SpawnStone");
             audioItemShow = Resources.Load<AudioClip>("Sounds/ItemShow");
             audioShootStone = Resources.Load<AudioClip>("Sounds/ShootStone");
             audioTileExplode = Resources.Load<AudioClip>("Sounds/TileExplode");
             audioLostHp = Resources.Load<AudioClip>("Sounds/LostHp");
             audioDead = Resources.Load<AudioClip>("Sounds/Dead");
+            audioPortal = Resources.Load<AudioClip>("Sounds/Portal");
         }
     }
 
@@ -76,6 +80,11 @@ public class SoundEffect : MonoBehaviour
         audioSource.PlayOneShot(audioEatStones);
     }
 
+    public static void PlayEatPhoenix()
+    {
+        audioSource.PlayOneShot(audioEatPhoenix);
+    }
+
     public static void PlaySpawnStone()
     {
         audioSource.PlayOneShot(audioSpawnStone);
@@ -104,5 +113,10 @@ public class SoundEffect : MonoBehaviour
     public static void PlayDead()
     {
         audioSource.PlayOneShot(audioDead);
+    }
+
+    public static void PlayPortal()
+    {
+        audioSource.PlayOneShot(audioPortal);
     }
 }

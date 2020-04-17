@@ -9,7 +9,7 @@ public class BulletController : MonoBehaviour
 
     protected float timeLife = 0.25f;
     public Vector3 direction;
-    private bool isAlive;
+    protected bool isAlive;
 
     void Start()
     {
@@ -66,8 +66,10 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "EnemyCollision" && isAlive)
+        
+        if (collision.tag == "Enemy" && isAlive)
         {
+            ScoreManager.IncreaseScore(3);
             GameObject parent = collision.gameObject.transform.parent.gameObject;
             SpawnEnemyController.spawnEnemies[parent.GetComponent<Enemy>().index].Kill();
             Instantiate(stone, collision.gameObject.transform.position + Vector3.up * 0.2f, Quaternion.identity);

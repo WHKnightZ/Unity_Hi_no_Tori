@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour
     private static bool isInit = false;
     private static Vector3[] localScale = { new Vector3(-1f, 1f, 1f), new Vector3(1f, 1f, 1f) };
     private static Vector3[] offsetHorizontal = { Vector3.left, Vector3.right };
-    private static Vector3[] jumpForce = { new Vector3(0f, 700f, 0f), new Vector3(0f, 250f, 0f) };
+    private static Vector3[] jumpForce = { new Vector3(0f, 700f, 0f), new Vector3(0f, 220f, 0f) };
 
     private GameObject background;
     private Rigidbody2D rb;
@@ -19,12 +19,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Sprite spriteCrouch;
     [SerializeField] private LayerMask layerEnemy;
     [SerializeField] private GameObject playerDead;
+    [SerializeField] private GameObject playerPortal;
 
-    private GameObject bullet;
-    private GameObject bulletUp;
+    private static GameObject bullet;
+    private static GameObject bulletUp;
 
     private Sprite sprite;
     private SpriteRenderer spriteRenderer;
+    private GameObject boundaryStart;
+
     private float speed = 1800f;
     private int jumpState;
     private int jumpLow;
@@ -36,6 +39,7 @@ public class PlayerController : MonoBehaviour
     private float delayAnimationShoot = 0f;
     private int stateMove = 0;
 
+    private bool isUp;
     private bool isCrouch;
     private bool isShoot;
     private bool isJump;
@@ -44,9 +48,6 @@ public class PlayerController : MonoBehaviour
     private bool isShowSprite = true;
     private float timerImmune;
 
-    private int life = 3;
-    private int maxHp = 5;
-    private int hp = 5;
     private int stone = 20;
 
 
@@ -65,8 +66,10 @@ public class PlayerController : MonoBehaviour
         }
 
         cam = MainCamera.cam;
+        boundaryStart = GameObject.Find("BoundaryStart");
+
         minCam = 0f;
-        maxCam = GameObject.Find("Boundary").transform.position.x - 10f;
+        maxCam = GameObject.Find("BoundaryEnd").transform.position.x - 10f;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -87,6 +90,8 @@ public class PlayerController : MonoBehaviour
         delayShoot -= Time.deltaTime;
 
         float offset = 0f;
+
+        isUp = Input.GetKey(KeyCode.W);
         if (Input.GetKey(KeyCode.A))
         {
             offset = -speed * Time.deltaTime;
@@ -131,6 +136,13 @@ public class PlayerController : MonoBehaviour
             jumpState = 1;
         if (IsGrounded())
         {
+            if (isUp && PortalManager.IsInPortal(transform.position))
+            {
+                Instantiate(playerPortal, transform.position, Quaternion.identity);
+                Destroy(gameObject);
+                SoundEffect.PlayPortal();
+                return;
+            }
             isJump = false;
             var pos = Unstable.tilemap.WorldToCell(transform.position - Vector3.up * 0.3f);
             pos.y -= 1;
@@ -175,8 +187,9 @@ public class PlayerController : MonoBehaviour
 
         if (isShoot)
         {
-            if (isCrouch)
+            if (isCrouch && StoneManager.stone > 0)
             {
+                StoneManager.ReloadStone(-1);
                 delayShoot = 0.3f;
                 sprite = spriteCrouch;
                 Vector3 pos;
@@ -190,9 +203,9 @@ public class PlayerController : MonoBehaviour
             {
                 delayShoot = 0.4f;
                 sprite = spriteShoot;
-                if (Input.GetKey(KeyCode.W))
+                if (isUp)
                 {
-                    Instantiate(bulletUp, transform.position + Vector3.up * 0.6f + offsetHorizontal[drt] * 0.43f, Quaternion.identity);
+                    Instantiate(bulletUp, transform.position + Vector3.up * 0.6f + offsetHorizontal[drt] * 0.4f, Quaternion.identity);
                 }
                 else
                 {
@@ -221,8 +234,8 @@ public class PlayerController : MonoBehaviour
                 isImmune = false;
         }
 
-        if (transform.position.y < -9f)
-            LostHp(hp);
+        if (transform.position.y < -8.5f)
+            LostHp(HpManager.hp);
 
         ReloadCamera();
     }
@@ -236,8 +249,10 @@ public class PlayerController : MonoBehaviour
     {
         float camPos = Mathf.Clamp(transform.position.x, minCam, maxCam);
         cam.transform.position = new Vector3(camPos, 0f, -10f);
+        minCam = camPos;
+        boundaryStart.transform.position = new Vector3(camPos - 10f, 0f, 0f);
 
-        float bgPos = camPos / 1.1f;
+        float bgPos = camPos / 1.15f;
         if (bgPos + 44f < camPos + 20f)
             bgPos += 22f * (int)((camPos + 20f - bgPos - 44f) / 22f);
         else if (bgPos > camPos)
@@ -247,8 +262,7 @@ public class PlayerController : MonoBehaviour
 
     void LostHp(int n)
     {
-        hp -= n;
-        if (hp <= 0)
+        if (HpManager.LostHp(n))
         {
             Dead();
             return;
