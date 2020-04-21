@@ -6,7 +6,7 @@ public class ItemMoney : Item
     {
         if (isVisible)
         {
-            if (collision.tag == "Player")
+            if (collision.CompareTag(tagPlayer))
             {
                 Destroy(parent);
                 ScoreManager.IncreaseScore(10);
@@ -15,7 +15,7 @@ public class ItemMoney : Item
         }
         else
         {
-            if (collision.tag == "Bullet")
+            if (collision.CompareTag(tagBullet))
             {
                 isVisible = true;
                 spriteRenderer.sprite = sprite;

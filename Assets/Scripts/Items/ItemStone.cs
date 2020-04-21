@@ -4,6 +4,8 @@ public class ItemStone : MonoBehaviour
 {
     private static Vector2 velocity = new Vector2(-4f, 0f);
     private static Vector2 vzero = new Vector2(0f, -0.002f);
+    public static string tagPlayer;
+    public static string tagBullet;
 
     private GameObject parent;
     private Rigidbody2D rb;
@@ -54,13 +56,13 @@ public class ItemStone : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag(tagPlayer))
         {
             Destroy(parent);
             StoneManager.ReloadStone(1);
             SoundEffect.PlayEatStone();
         }
-        if (collision.tag == "Bullet")
+        if (collision.CompareTag(tagBullet))
         {
             velocity = -velocity;
             if (isMove)

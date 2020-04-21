@@ -6,7 +6,7 @@ public class ItemPhoenix : Item
     {
         if (isVisible)
         {
-            if (collision.tag == "Player")
+            if (collision.CompareTag(tagPlayer))
             {
                 HpManager.IncreaseMaxHp();
                 Destroy(parent);
@@ -15,7 +15,7 @@ public class ItemPhoenix : Item
         }
         else
         {
-            if (collision.tag == "Bullet")
+            if (collision.CompareTag(tagBullet))
             {
                 isVisible = true;
                 spriteRenderer.sprite = sprite;

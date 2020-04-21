@@ -6,7 +6,7 @@ public class ItemStones : Item
     {
         if (isVisible)
         {
-            if (collision.tag == "Player")
+            if (collision.CompareTag(tagPlayer))
             {
                 Destroy(parent);
                 StoneManager.ReloadStone(20);
@@ -15,7 +15,7 @@ public class ItemStones : Item
         }
         else
         {
-            if (collision.tag == "Bullet")
+            if (collision.CompareTag(tagBullet))
             {
                 isVisible = true;
                 spriteRenderer.sprite = sprite;
