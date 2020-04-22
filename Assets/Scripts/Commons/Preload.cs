@@ -2,7 +2,7 @@
 
 public class Preload : MonoBehaviour
 {
-    private static bool isInit = false;
+    public static bool isInit = false;
 
     void Awake()
     {
@@ -51,18 +51,21 @@ public class Preload : MonoBehaviour
             // EnemyFox
             EnemyFox.sprites = Resources.LoadAll<Sprite>("Sprites/Enemies/Fox");
 
+            // EnemyDinoFire
+            EnemyDinoFire.bullet = Resources.Load<GameObject>("Prefabs/Enemies/BulletDinoFire");
+
             // Boss
             Boss.piece = Resources.Load<GameObject>("Prefabs/Others/Piece");
 
-            // Boss01
-            Boss01.bullet = Resources.Load<GameObject>("Prefabs/Bosses/BulletBoss01");
-            sprites = Resources.LoadAll<Sprite>("Sprites/Bosses/Boss01");
-            Boss01.sprites = new Sprite[4];
-            Boss01.sprites[0] = sprites[0];
-            Boss01.sprites[1] = sprites[1];
-            Boss01.sprites[2] = sprites[2];
-            Boss01.sprites[3] = sprites[1];
-            Boss01.tagBullet = "Bullet";
+            // Boss13
+            Boss13.bullet = Resources.Load<GameObject>("Prefabs/Bosses/BulletBoss13");
+            sprites = Resources.LoadAll<Sprite>("Sprites/Bosses/Boss13");
+            Boss13.sprites = new Sprite[4];
+            Boss13.sprites[0] = sprites[0];
+            Boss13.sprites[1] = sprites[1];
+            Boss13.sprites[2] = sprites[2];
+            Boss13.sprites[3] = sprites[1];
+            Boss13.tagBullet = "Bullet";
 
         }
 

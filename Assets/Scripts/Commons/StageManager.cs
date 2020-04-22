@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class StageManager : MonoBehaviour
 {
     public static int stage = 1;
+    public static int stageNext;
     public static Vector3 position;
     public static bool isLocated = false;
 
@@ -18,7 +19,8 @@ public class StageManager : MonoBehaviour
             StoneManager.stone = 20;
             StoneManager.ReloadStone(0);
         }
-        delay = .5f;
+        delay = 2f;
+        SoundBackground.Stop();
     }
 
     void Update()

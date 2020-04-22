@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     public int max = 2;
     public float delay = 1f;
 
-    public void CheckDead()
+    public virtual void CheckDead()
     {
         if (transform.position.y < -8.5f || MainCamera.cam.transform.position.x - 12f > transform.position.x)
         {

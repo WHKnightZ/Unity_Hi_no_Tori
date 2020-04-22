@@ -17,4 +17,10 @@ public class EnemyDemon : Enemy
         CheckDead();
     }
 
+    public override void CheckDead()
+    {
+        if (MainCamera.cam.transform.position.x - 12f > transform.position.x)
+            Destroy(gameObject);
+    }
+
 }

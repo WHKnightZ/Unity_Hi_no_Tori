@@ -17,8 +17,7 @@ public class Boss : MonoBehaviour
             hp--;
             if (hp == 0)
             {
-                GameObject obj = Instantiate(piece, transform.position, Quaternion.identity);
-                obj.GetComponent<EatPiece>().stage = 1;
+                Instantiate(piece, transform.position, Quaternion.identity);
                 Destroy(gameObject);
             }
         }

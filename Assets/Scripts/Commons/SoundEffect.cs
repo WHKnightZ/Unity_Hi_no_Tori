@@ -22,7 +22,7 @@ public class SoundEffect : MonoBehaviour
     private static AudioClip audioEatPiece;
 
     private static AudioClip audioDamageBoss;
-    private static AudioClip audioBulletBoss01;
+    private static AudioClip audioBulletBoss;
 
     void Start()
     {
@@ -48,7 +48,7 @@ public class SoundEffect : MonoBehaviour
             audioEatPiece = Resources.Load<AudioClip>("Sounds/EatPiece");
 
             audioDamageBoss = Resources.Load<AudioClip>("Sounds/DamageBoss");
-            audioBulletBoss01 = Resources.Load<AudioClip>("Sounds/BulletBoss01");
+            audioBulletBoss = Resources.Load<AudioClip>("Sounds/BulletBoss");
         }
     }
 
@@ -137,9 +137,9 @@ public class SoundEffect : MonoBehaviour
         audioSource.PlayOneShot(audioDamageBoss);
     }
 
-    public static void PlayBulletBoss01()
+    public static void PlayBulletBoss()
     {
-        audioSource.PlayOneShot(audioBulletBoss01);
+        audioSource.PlayOneShot(audioBulletBoss);
     }
 
 }

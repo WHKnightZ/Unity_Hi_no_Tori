@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BulletBoss01 : MonoBehaviour
+public class BulletBoss13 : MonoBehaviour
 {
     private Vector3 velocity;
 
@@ -13,5 +13,7 @@ public class BulletBoss01 : MonoBehaviour
     void Update()
     {
         transform.Translate(velocity * Time.deltaTime);
+        if (transform.position.x < MainCamera.cam.transform.position.x - 12f)
+            Destroy(gameObject);
     }
 }

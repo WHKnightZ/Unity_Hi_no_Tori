@@ -32,4 +32,9 @@ public class SoundBackground : MonoBehaviour
         audioSource.clip = audioBGMBoss;
         audioSource.Play();
     }
+
+    public static void Stop()
+    {
+        audioSource.Stop();
+    }
 }

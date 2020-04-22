@@ -5,7 +5,6 @@ public class EatPiece : MonoBehaviour
 {
     public static string tagPlayer = "Player";
 
-    public int stage;
     private bool isEaten = false;
     private float delay;
 
@@ -16,7 +15,8 @@ public class EatPiece : MonoBehaviour
             delay -= Time.deltaTime;
             if (delay < 0f)
             {
-                StageManager.stage = stage;
+                StageManager.stage = StageManager.stageNext;
+                StageManager.isLocated = false;
                 SceneManager.LoadScene("Prepare");
             }
         }

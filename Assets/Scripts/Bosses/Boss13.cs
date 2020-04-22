@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Boss01 : Boss
+public class Boss13 : Boss
 {
     public static GameObject bullet;
     public static Sprite[] sprites;
@@ -39,7 +39,7 @@ public class Boss01 : Boss
                 if (state == 2)
                 {
                     Instantiate(bullet, spawnBulletPoint, Quaternion.identity);
-                    SoundEffect.PlayBulletBoss01();
+                    SoundEffect.PlayBulletBoss();
                 }
                 else if (state == 4)
                 {
