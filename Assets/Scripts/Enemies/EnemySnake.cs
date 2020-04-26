@@ -2,7 +2,7 @@
 
 public class EnemySnake : Enemy
 {
-    private static Vector2[] velocity = { new Vector2(-2.2f, 0f), new Vector2(2.2f, 0f) };
+    private static Vector2[] velocity = { new Vector2(-1.6f, 0f), new Vector2(1.6f, 0f) };
     private static Vector2 vzero = new Vector2(0f, -0.002f);
 
     private int drt;
@@ -36,7 +36,7 @@ public class EnemySnake : Enemy
                     float distance = PlayerController.player.transform.position.x - transform.position.x;
                     if (distance > 0f)
                     {
-                        if (distance < 0.1f)
+                        if (distance < 0.05f)
                             rb.velocity = Vector2.zero;
                         else
                         {
@@ -46,7 +46,7 @@ public class EnemySnake : Enemy
                     }
                     else
                     {
-                        if (distance > -0.1f)
+                        if (distance > -0.05f)
                             rb.velocity = Vector2.zero;
                         else
                         {

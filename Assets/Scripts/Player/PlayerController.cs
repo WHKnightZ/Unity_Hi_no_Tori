@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public static Sprite spriteJump;
     public static Sprite spriteShoot;
     public static Sprite spriteCrouch;
+    public static LayerMask layerGround;
     public static LayerMask layerEnemy;
     public static GameObject playerDead;
     public static GameObject playerPortal;
@@ -18,7 +19,9 @@ public class PlayerController : MonoBehaviour
 
     private static Vector3[] localScale = { new Vector3(-1f, 1f, 1f), new Vector3(1f, 1f, 1f) };
     private static Vector3[] offsetHorizontal = { Vector3.left, Vector3.right };
-    private static Vector3[] jumpForce = { new Vector3(0f, 700f, 0f), new Vector3(0f, 220f, 0f) };
+    private static float[] jumpVelocity = { 14f, 4.4f };
+    private static Vector3 offsetFoot = new Vector3(-0.2f, -1f, 0f);
+    private static Vector3 sizeFoot = new Vector3(0.4f, 0.01f, 0f);
 
     private GameObject background;
     private Rigidbody2D rb;
@@ -29,10 +32,9 @@ public class PlayerController : MonoBehaviour
     private Sprite sprite;
     private SpriteRenderer spriteRenderer;
     private GameObject boundaryStart;
-    private GameObject boss;
     private float posBossActive;
 
-    private float speed = 1800f;
+    private float speed = 40f;
     private int jumpState;
     private int jumpLow;
     private int currentTileX = -99, currentTileY = -99;
@@ -41,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private int drt = 1;
     private float delayAnimationMove = 0f;
     private float delayAnimationShoot = 0f;
+    private float delayAnimationImmune = 0f;
     private int stateMove = 0;
 
     private bool isCameraBoss = false;
@@ -50,7 +53,7 @@ public class PlayerController : MonoBehaviour
     private bool isJump;
     private bool isFall = false;
     private bool isImmune = false;
-    private bool isShowSprite = true;
+    private bool isShowSprite;
     private float timerImmune;
 
     void Start()
@@ -90,6 +93,9 @@ public class PlayerController : MonoBehaviour
         float offset = 0f;
 
         isUp = Input.GetKey(KeyCode.W);
+        isCrouch = Input.GetKey(KeyCode.S);
+        isShoot = Input.GetKey(KeyCode.K) && delayShoot < 0f;
+
         if (Input.GetKey(KeyCode.A))
         {
             offset = -speed * Time.deltaTime;
@@ -101,8 +107,7 @@ public class PlayerController : MonoBehaviour
             drt = 1;
         }
 
-        rb.AddForce(Vector2.right * offset);
-        float velocity = Mathf.Clamp(rb.velocity.x * 0.9f, -6f, 6f);
+        float velocity = Mathf.Clamp((rb.velocity.x + offset) * 0.9f, -6f, 6f);
         rb.velocity = new Vector2(velocity, rb.velocity.y);
 
         if (velocity > 0.5f || velocity < -0.5f)
@@ -118,20 +123,15 @@ public class PlayerController : MonoBehaviour
         }
         transform.localScale = localScale[drt];
 
-        isCrouch = false;
-        if (Input.GetKey(KeyCode.S))
-            isCrouch = true;
         if (isJump && rb.velocity.y < -0.1f)
             isFall = true;
 
-        isShoot = false;
-        if (Input.GetKey(KeyCode.K) && delayShoot < 0f)
-            isShoot = true;
         jumpState = -1;
         if (Input.GetKey(KeyCode.J))
             jumpState = 0;
         else if (Input.GetKey(KeyCode.L))
             jumpState = 1;
+
         if (IsGrounded())
         {
             if (isUp && PortalManager.IsInPortal(transform.position))
@@ -166,7 +166,7 @@ public class PlayerController : MonoBehaviour
             {
                 isJump = true;
                 delayJump = 0.1f;
-                rb.AddForce(jumpForce[jumpState]);
+                rb.velocity = new Vector2(rb.velocity.x, jumpVelocity[jumpState]);
                 SoundEffect.PlayJump();
             }
             isFall = false;
@@ -227,9 +227,16 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            isShowSprite = !isShowSprite;
+            delayAnimationImmune -= Time.deltaTime;
+            if (delayAnimationImmune < 0f)
+            {
+                delayAnimationImmune = 0.025f;
+                isShowSprite = !isShowSprite;
+            }
+
             if (!isShowSprite)
                 spriteRenderer.sprite = null;
+
             timerImmune -= Time.deltaTime;
             if (timerImmune < 0f)
                 isImmune = false;
@@ -238,7 +245,7 @@ public class PlayerController : MonoBehaviour
         if (transform.position.y < -8.5f)
             LostHp(HpManager.hp);
 
-        if (!isCameraBoss&& transform.position.x >= posBossActive)
+        if (!isCameraBoss && transform.position.x >= posBossActive)
         {
             isCameraBoss = true;
             Instantiate(cameraBoss);
@@ -248,7 +255,9 @@ public class PlayerController : MonoBehaviour
 
     bool IsGrounded()
     {
-        return rb.velocity.y > -0.002f && rb.velocity.y < 0.002f;
+        Vector3 left = transform.position + offsetFoot;
+        Vector3 right = left + sizeFoot;
+        return Physics2D.OverlapArea(left, right, layerGround) != null;
     }
 
     public void ReloadCamera()
@@ -259,10 +268,17 @@ public class PlayerController : MonoBehaviour
         boundaryStart.transform.position = new Vector3(camPos - 10f, 0f, 0f);
 
         float bgPos = camPos / 1.15f;
-        if (bgPos + 44f < camPos + 20f)
-            bgPos += 22f * (int)((camPos + 20f - bgPos - 44f) / 22f);
+
+        //if (bgPos + 44f < camPos + 20f)
+        //    bgPos += 22f * (int)((camPos + 20f - bgPos - 44f) / 22f);
+        //else if (bgPos > camPos)
+        //    bgPos -= 22f * (int)((bgPos - camPos) / 22f + 1);
+
+        if (bgPos + 24f < camPos)
+            bgPos += 22f * (int)((camPos - bgPos - 24f) / 22f);
         else if (bgPos > camPos)
             bgPos -= 22f * (int)((bgPos - camPos) / 22f + 1);
+
         background.transform.position = new Vector3(bgPos, 0f, 0f);
     }
 
@@ -274,6 +290,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
         isImmune = true;
+        isShowSprite = true;
         timerImmune = 1f;
         SoundEffect.PlayLostHp();
     }
@@ -284,6 +301,11 @@ public class PlayerController : MonoBehaviour
         Instantiate(playerDead, transform.position, Quaternion.identity);
         SoundEffect.PlayDead();
         Destroy(gameObject);
+    }
+
+    public void ClearImmune()
+    {
+        isImmune = false;
     }
 
 }

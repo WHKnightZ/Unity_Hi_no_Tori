@@ -2,7 +2,7 @@
 
 public class ItemStone : MonoBehaviour
 {
-    private static Vector2 velocity = new Vector2(-4f, 0f);
+    private static Vector2 velocity = new Vector2(-3.5f, 0f);
     private static Vector2 vzero = new Vector2(0f, -0.002f);
     public static string tagPlayer;
     public static string tagBullet;
@@ -35,7 +35,7 @@ public class ItemStone : MonoBehaviour
         {
             if (IsGrounded() && CantMove())
             {
-                Unstable.CreateStone(transform.position);
+                Unstable.CreateStoneInstant(transform.position);
                 Destroy(parent);
                 return;
             }

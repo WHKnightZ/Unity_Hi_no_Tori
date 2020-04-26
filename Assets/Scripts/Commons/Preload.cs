@@ -2,6 +2,8 @@
 
 public class Preload : MonoBehaviour
 {
+    public delegate bool BoolDelegate();
+
     public static bool isInit = false;
 
     void Awake()
@@ -22,6 +24,7 @@ public class Preload : MonoBehaviour
             PlayerController.spriteCrouch = sprites[2];
             PlayerController.bullet = Resources.Load<GameObject>("Prefabs/Player/Bullet");
             PlayerController.bulletUp = Resources.Load<GameObject>("Prefabs/Player/BulletUp");
+            PlayerController.layerGround = LayerMask.GetMask("Ground");
             PlayerController.layerEnemy = LayerMask.GetMask("Enemy");
             PlayerController.playerDead = Resources.Load<GameObject>("Prefabs/Player/PlayerDead");
             PlayerController.playerPortal = Resources.Load<GameObject>("Prefabs/Player/PlayerPortal");
@@ -45,6 +48,9 @@ public class Preload : MonoBehaviour
             Item.tagPlayer = ItemStone.tagPlayer = "Player";
             Item.tagBullet = ItemStone.tagBullet = "Bullet";
 
+            // Enemy
+            Enemy.layerGround = PlayerController.layerGround;
+
             // EnemyDinoJump
             EnemyDinoJump.sprites = Resources.LoadAll<Sprite>("Sprites/Enemies/DinoJump");
 
@@ -56,6 +62,11 @@ public class Preload : MonoBehaviour
 
             // Boss
             Boss.piece = Resources.Load<GameObject>("Prefabs/Others/Piece");
+            Boss.tagBullet = Item.tagBullet;
+            Boss.layerGround = Enemy.layerGround;
+
+            // Boss01
+            Boss01.bullet = Resources.Load<GameObject>("Prefabs/Bosses/BulletBoss01");
 
             // Boss13
             Boss13.bullet = Resources.Load<GameObject>("Prefabs/Bosses/BulletBoss13");
@@ -65,7 +76,6 @@ public class Preload : MonoBehaviour
             Boss13.sprites[1] = sprites[1];
             Boss13.sprites[2] = sprites[2];
             Boss13.sprites[3] = sprites[1];
-            Boss13.tagBullet = "Bullet";
 
         }
 

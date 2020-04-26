@@ -31,7 +31,7 @@ public class EatPiece : MonoBehaviour
             player.GetComponent<PlayerController>().enabled = false;
             gameObject.GetComponent<SpriteRenderer>().sprite = null;
             isEaten = true;
-            delay = 1.5f;
+            delay = 2f;
             SoundEffect.PlayEatPiece();
         }
     }

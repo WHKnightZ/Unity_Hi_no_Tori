@@ -3,7 +3,7 @@
 public class EnemyFox : Enemy
 {
     private static float[] velocity = { -3.2f, 3.2f };
-    private static Vector2 jumpForce = new Vector2(0f, 800f);
+    private static Vector2 jumpForce = new Vector2(0f, 700f);
     private static Vector2[] offset = { new Vector2(-0.6f, 0f), new Vector2(0.6f, 0f) };
     private static Vector2 size = new Vector3(0.4f, 0.4f);
     private static Vector2 size2 = new Vector3(0.2f, 1.02f);

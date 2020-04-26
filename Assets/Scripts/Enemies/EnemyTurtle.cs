@@ -3,7 +3,7 @@
 public class EnemyTurtle : Enemy
 {
     private static Vector2[] velocity = { new Vector2(-100f, 0f), new Vector2(100f, 0f) };
-    private static Vector2[] offset1 = { new Vector2(-0.6f, 0f), new Vector2(0.6f, 0f) };
+    private static Vector2[] offset1 = { new Vector2(-0.55f, 0f), new Vector2(0.55f, 0f) };
     private static Vector2[] offset2 = { new Vector2(-0.6f, -0.6f), new Vector2(0.6f, -0.6f) };
     private static Vector2 size = new Vector3(0.4f, 0.4f);
     private static Vector2 vzero = new Vector2(0f, -0.002f);

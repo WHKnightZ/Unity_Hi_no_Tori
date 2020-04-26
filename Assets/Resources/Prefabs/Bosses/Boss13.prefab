@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5903779947735126444}
   - component: {fileID: 2258993710036000499}
   m_Layer: 10
-  m_Name: Boss01
+  m_Name: Boss13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,4 +143,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 132d1c5ebadf33748b001edae04c5acf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 12
+  hp: 20

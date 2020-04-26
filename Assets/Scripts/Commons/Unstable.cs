@@ -44,4 +44,10 @@ public class Unstable : MonoBehaviour
         }
         return false;
     }
+
+    public static void CreateStoneInstant(Vector3 pos)
+    {
+        var pos2 = tilemap.WorldToCell(pos);
+        tilemap.SetTile(pos2, tileStone);
+    }
 }

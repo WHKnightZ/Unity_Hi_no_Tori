@@ -19,10 +19,11 @@ public class SoundEffect : MonoBehaviour
     private static AudioClip audioLostHp;
     private static AudioClip audioDead;
     private static AudioClip audioPortal;
+    private static AudioClip audioSpawnPiece;
     private static AudioClip audioEatPiece;
 
     private static AudioClip audioDamageBoss;
-    private static AudioClip audioBulletBoss;
+    private static AudioClip audioBossShoot;
 
     void Start()
     {
@@ -45,10 +46,11 @@ public class SoundEffect : MonoBehaviour
             audioLostHp = Resources.Load<AudioClip>("Sounds/LostHp");
             audioDead = Resources.Load<AudioClip>("Sounds/Dead");
             audioPortal = Resources.Load<AudioClip>("Sounds/Portal");
+            audioSpawnPiece = Resources.Load<AudioClip>("Sounds/SpawnPiece");
             audioEatPiece = Resources.Load<AudioClip>("Sounds/EatPiece");
 
             audioDamageBoss = Resources.Load<AudioClip>("Sounds/DamageBoss");
-            audioBulletBoss = Resources.Load<AudioClip>("Sounds/BulletBoss");
+            audioBossShoot = Resources.Load<AudioClip>("Sounds/BossShoot");
         }
     }
 
@@ -127,6 +129,11 @@ public class SoundEffect : MonoBehaviour
         audioSource.PlayOneShot(audioPortal);
     }
 
+    public static void PlaySpawnPiece()
+    {
+        audioSource.PlayOneShot(audioSpawnPiece);
+    }
+
     public static void PlayEatPiece()
     {
         audioSource.PlayOneShot(audioEatPiece);
@@ -137,9 +144,9 @@ public class SoundEffect : MonoBehaviour
         audioSource.PlayOneShot(audioDamageBoss);
     }
 
-    public static void PlayBulletBoss()
+    public static void PlayBossShoot()
     {
-        audioSource.PlayOneShot(audioBulletBoss);
+        audioSource.PlayOneShot(audioBossShoot);
     }
 
 }

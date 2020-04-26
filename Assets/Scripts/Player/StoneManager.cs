@@ -27,7 +27,7 @@ public class StoneManager : MonoBehaviour
     {
         stone += _stone;
         if (stone > 99)
-            stone = 00;
+            stone = 99;
         spriteRenderer[0].sprite = nums[stone / 10];
         spriteRenderer[1].sprite = nums[stone % 10];
     }

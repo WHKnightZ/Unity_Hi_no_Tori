@@ -7,7 +7,7 @@ public class Boss13 : Boss
 
     private SpriteRenderer spriteRenderer;
     private Vector3 spawnBulletPoint;
-    private float delayBullet = 2f;
+    private float delayShoot = 1.8f;
     private int state = 0;
     private bool isShooting = false;
     private float delayAnimation;
@@ -18,15 +18,17 @@ public class Boss13 : Boss
         boss.SetActive(false);
         spriteRenderer = GetComponent<SpriteRenderer>();
         spawnBulletPoint = transform.position + new Vector3(-1.5f, 0.5f, 0f);
+
+        enabled = false;
     }
 
     void Update()
     {
-        delayBullet -= Time.deltaTime;
-        if (delayBullet < 0f)
+        delayShoot -= Time.deltaTime;
+        if (delayShoot < 0f)
         {
             isShooting = true;
-            delayBullet = 1.8f;
+            delayShoot = 1.8f;
             delayAnimation = 0.12f;
         }
         else if (isShooting)
@@ -39,7 +41,7 @@ public class Boss13 : Boss
                 if (state == 2)
                 {
                     Instantiate(bullet, spawnBulletPoint, Quaternion.identity);
-                    SoundEffect.PlayBulletBoss();
+                    SoundEffect.PlayBossShoot();
                 }
                 else if (state == 4)
                 {
@@ -50,4 +52,5 @@ public class Boss13 : Boss
             }
         }
     }
+
 }

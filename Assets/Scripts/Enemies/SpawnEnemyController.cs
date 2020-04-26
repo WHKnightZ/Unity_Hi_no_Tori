@@ -8,11 +8,12 @@ public class SpawnEnemyController : MonoBehaviour
     public static int count;
     public static Transform trans;
 
+    private static float camUp = 7.8f;
+
     private Camera cam;
 
     void Start()
     {
-        Enemy.layerGround = LayerMask.GetMask("Ground");
         cam = MainCamera.cam;
         spawnEnemies = new SpawnEnemy[maxEnemy];
         count = 0;
@@ -23,25 +24,27 @@ public class SpawnEnemyController : MonoBehaviour
             Add(new SpawnEnemy(obj));
             obj.SetActive(false);
         }
-        
+
     }
 
     void Update()
     {
-        float posLeft = cam.transform.position.x + 10f;
-        float posRight = posLeft + 10f;
+        float posLeft1 = cam.transform.position.x - 8f;
+        float posLeft2 = posLeft1 + 18f;
+        float posRight = posLeft2 + 10f;
         for (int i = 0; i < count; i++)
         {
-            float pos = spawnEnemies[i].gameObject.transform.position.x;
-            if (posLeft < pos && pos < posRight)
+            SpawnEnemy spawnEnemy = spawnEnemies[i];
+            Vector3 pos = spawnEnemy.gameObject.transform.position;
+            float posX = pos.x;
+            float posY = pos.y;
+            if (posX > posLeft1)
             {
-                if (spawnEnemies[i].count == 0)
-                    spawnEnemies[i].Spawn();
-                else
+                if ((posLeft2 < posX && posX < posRight) || (posY > camUp && posX < posLeft2))
                 {
-                    spawnEnemies[i].timer -= Time.deltaTime;
-                    if (spawnEnemies[i].timer < 0f)
-                        spawnEnemies[i].Spawn();
+                    spawnEnemy.timer -= Time.deltaTime;
+                    if (spawnEnemy.timer < 0f)
+                        spawnEnemy.Spawn();
                 }
             }
         }

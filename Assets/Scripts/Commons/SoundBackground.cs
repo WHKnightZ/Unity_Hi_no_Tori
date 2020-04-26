@@ -14,9 +14,9 @@ public class SoundBackground : MonoBehaviour
             isInit = true;
             audioSource = GetComponent<AudioSource>();
             audioBGMStage = new AudioClip[3];
-            audioBGMStage[0] = Resources.Load<AudioClip>("Sounds/BGM01");
-            audioBGMStage[1] = Resources.Load<AudioClip>("Sounds/BGM02");
-            audioBGMStage[2] = Resources.Load<AudioClip>("Sounds/BGM03");
+            audioBGMStage[0] = Resources.Load<AudioClip>("Sounds/BGM00");
+            audioBGMStage[1] = Resources.Load<AudioClip>("Sounds/BGM01");
+            audioBGMStage[2] = Resources.Load<AudioClip>("Sounds/BGM02");
             audioBGMBoss = Resources.Load<AudioClip>("Sounds/BGMBoss");
         }
     }

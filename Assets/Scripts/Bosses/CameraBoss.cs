@@ -12,12 +12,14 @@ public class CameraBoss : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 0f;
         Boss.boss.SetActive(true);
         player = PlayerController.player;
         cam = MainCamera.cam;
         rb = player.GetComponent<Rigidbody2D>();
-        rb.simulated = false;
+        rb.velocity = new Vector2(rb.velocity.x, 0f);
         playerController = player.GetComponent<PlayerController>();
+        playerController.ClearImmune();
         playerController.enabled = false;
         offset = (playerController.maxCam - cam.transform.position.x) / max;
         count = -20;
@@ -36,8 +38,9 @@ public class CameraBoss : MonoBehaviour
             playerController.ReloadCamera();
             if (count == max)
             {
+                Time.timeScale = 1f;
+                Boss.boss.GetComponent<Boss>().Enable();
                 SoundBackground.PlayBGMBoss();
-                rb.simulated = true;
                 playerController.enabled = true;
                 Destroy(gameObject);
             }
