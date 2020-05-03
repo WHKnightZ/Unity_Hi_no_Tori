@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 2369778763782762707}
   - component: {fileID: 2369778763782762704}
   m_Layer: 10
-  m_Name: GameObject
+  m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

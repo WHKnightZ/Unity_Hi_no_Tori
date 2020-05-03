@@ -13,7 +13,8 @@ public class CameraBoss : MonoBehaviour
     void Start()
     {
         Time.timeScale = 0f;
-        Boss.boss.SetActive(true);
+        if (Boss.boss != null)
+            Boss.boss.SetActive(true);
         player = PlayerController.player;
         cam = MainCamera.cam;
         rb = player.GetComponent<Rigidbody2D>();
@@ -39,7 +40,8 @@ public class CameraBoss : MonoBehaviour
             if (count == max)
             {
                 Time.timeScale = 1f;
-                Boss.boss.GetComponent<Boss>().Enable();
+                if (Boss.boss != null)
+                    Boss.boss.GetComponent<Boss>().Enable();
                 SoundBackground.PlayBGMBoss();
                 playerController.enabled = true;
                 Destroy(gameObject);
